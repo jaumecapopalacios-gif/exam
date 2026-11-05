@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Level 2 Exam</title>
+<style>
+  :root {
+    --azul: #1f4e79;
+    --azul-claro: #eaf2f8;
+    --gris: #f4f6f8;
+    --borde: #cfd8dc;
+    --texto: #222;
+    --rojo: #b71c1c;
+    --verde: #2e7d32;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7f9fb;
+    color: var(--texto);
+    line-height: 1.5;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid var(--borde);
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.08);
+  }
+  header {
+    border-bottom: 3px solid var(--azul);
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+  }
+  h1 { margin: 0 0 6px; color: var(--azul); font-size: 24px; }
+  h2 {
+    color: var(--azul);
+    font-size: 19px;
+    margin-top: 26px;
+    border-left: 5px solid var(--azul);
+    padding-left: 10px;
+  }
+  h3 { font-size: 16px; margin: 4px 0 8px; }
+  .subtitle { margin: 0; color: #555; font-size: 14px; }
+  .timer-box {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    align-items: center; margin-top: 12px;
+  }
+  .timer {
+    font-size: 20px; font-weight: bold; color: var(--rojo);
+    background: #fff3f3; border: 1px solid #ffcdd2;
+    padding: 6px 12px; border-radius: 8px;
+    min-width: 100px; text-align: center;
+  }
+  .note {
+    background: var(--azul-claro);
+    border: 1px solid #b7d5ea;
+    padding: 10px 12px;
+    border-radius: 10px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .question {
+    background: var(--gris);
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    padding: 12px;
+    margin: 12px 0;
+  }
+  .question p { margin: 0 0 8px; }
+  .options label {
+    display: block;
+    background: #fff;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin: 6px 0;
+    cursor: pointer;
+    font-size: 15px;
+  }
+  .options label:active { background: #f0f7ff; }
+  input[type="text"], select, textarea {
+    width: 100%;
+    padding: 9px 10px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: inherit;
+    background: #fff;
+  }
+  textarea { min-height: 90px; resize: vertical; }
+  .inline-select { width: auto; min-width: 70px; display: inline-block; }
+  .two-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .text-box {
+    background: #fff;
+    border: 1px dashed #90a4ae;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  .reading-text {
+    background: #fff;
+    border-left: 4px solid var(--azul);
+    padding: 8px 12px;
+    margin: 6px 0 10px;
+    font-size: 14px;
+  }
+  button {
+    background: var(--azul);
+    color: #fff;
+    border: none;
+    border-radius: 9px;
+    padding: 11px 16px;
+    font-size: 15px;
+    cursor: pointer;
+    margin: 6px 6px 6px 0;
+  }
+  button.secondary { background: #607d8b; }
+  button:disabled { background: #b0bec5; cursor: not-allowed; }
+  .submit-area {
+    margin-top: 26px;
+    padding-top: 16px;
+    border-top: 2px solid var(--borde);
+  }
+  .result { margin-top: 14px; font-weight: bold; color: var(--verde); }
+  .small { font-size: 13px; color: #666; }
+  @media (max-width: 600px) {
+    body { padding: 8px; }
+    .container { padding: 14px; }
+    .two-cols { grid-template-columns: 1fr; }
+    h1 { font-size: 21px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>English Level 2 Exam</h1>
+    <p class="subtitle"><strong>Estilo Cambridge · Nivel A2–B1 básico</strong></p>
+    <p class="subtitle">Reading · Use of English · Vocabulary · Listening · Writing · Speaking</p>
+    <div class="timer-box">
+      <div class="timer" id="timer">60:00</div>
+      <button type="button" id="startTimer">Iniciar tiempo</button>
+      <span class="small">60 minutos recomendados</span>
+    </div>
+  </header>
+
+  <div class="note">
+    <strong>Instrucciones:</strong> Completa todas las actividades.
+    Este examen <strong>no muestra respuestas correctas</strong>.
+    Al final pulsa <strong>Enviar examen</strong> y luego <strong>Descargar respuestas</strong>.
+  </div>
+
+  <form id="examForm">
+    <section>
+      <h2>Student information</h2>
+      <div class="two-cols">
+        <div>
+          <label for="studentName"><strong>Name:</strong></label>
+          <input type="text" id="studentName" name="studentName" placeholder="Tu nombre">
+        </div>
+        <div>
+          <label for="studentClass"><strong>Class / Group:</strong></label>
+          <input type="text" id="studentClass" name="studentClass" placeholder="Tu clase">
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Part 1 · Reading</h2>
+      <p class="small">Lee y elige A, B o C.</p>
+
+      <div class="question">
+        <div class="reading-text"><strong>SCHOOL LIBRARY:</strong> Please return all books before Friday. New books arrive on Monday.</div>
+        <p><strong>1.</strong> What should students do before Friday?</p>
+        <div class="options">
+          <label><input type="radio" name="r1" value="A"> A) Return library books.</label>
+          <label><input type="radio" name="r1" value="B"> B) Buy new books.</label>
+          <label><input type="radio" name="r1" value="C"> C) Visit the library on Monday.</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="reading-text"><strong>Email from Anna:</strong> Hi Sam, I can't meet at 3. Can we meet at 4 at the café? Anna</div>
+        <p><strong>2.</strong> What time will they meet?</p>
+        <div class="options">
+          <label><input type="radio" name="r2" value="A"> A) At 3.</label>
+          <label><input type="radio" name="r2" value="B"> B) At 4.</label>
+          <label><input type="radio" name="r2" value="C"> C) At 5.</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="reading-text"><strong>NOTICE:</strong> Football practice is cancelled today because of rain. Practice will be on Thursday at 5.</div>
+        <p><strong>3.</strong> Why is football practice cancelled?</p>
+        <div class="options">
+          <label><input type="radio" name="r3" value="A"> A) Because of rain.</label>
+          <label><input type="radio" name="r3" value="B"> B) Because the teacher is ill.</label>
+          <label><input type="radio" name="r3" value="C"> C) Because it is Thursday.</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="reading-text"><strong>Text from Tom:</strong> Mum, I'm going to the supermarket to buy milk and bread. I'll be back at 6. Tom</div>
+        <p><strong>4.</strong> What is Tom going to buy?</p>
+        <div class="options">
+          <label><input type="radio" name="r4" value="A"> A) Milk and bread.</label>
+          <label><input type="radio" name="r4" value="B"> B) Fruit.</label>
+          <label><input type="radio" name="r4" value="C"> C) Meat.</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="reading-text"><strong>SIGN:</strong> No food or drink in the computer room.</div>
+        <p><strong>5.</strong> What is not allowed in the computer room?</p>
+        <div class="options">
+          <label><input type="radio" name="r5" value="A"> A) Food and drink.</label>
+          <label><input type="radio" name="r5" value="B"> B) Computers.</label>
+          <label><input type="radio" name="r5" value="C"> C) Homework.</label>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Part 2 · Reading – Matching</h2>
+      <p class="small">Escribe el club correcto: A, B o C.</p>
+      <div class="text-box">
+        <p><strong>Club A – Music Club:</strong> Tuesdays, 4–5 p.m. Learn guitar and sing. Bring your own instrument.</p>
+        <p><strong>Club B – Art Club:</strong> Wednesdays, 4–5 p.m. Drawing and painting. All materials provided.</p>
+        <p><strong>Club C – Science Club:</strong> Fridays, 4–5 p.m. Fun experiments. No equipment needed.</p>
+      </div>
+
+      <div class="question">
+        <p><strong>1. Maria</strong> wants to paint, but she doesn't have any paints.</p>
+        <label>Club:
+          <select name="m1" class="inline-select">
+            <option value="">--</option><option>A</option><option>B</option><option>C</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="question">
+        <p><strong>2. John</strong> has a guitar and wants to learn songs.</p>
+        <label>Club:
+          <select name="m2" class="inline-select">
+            <option value="">--</option><option>A</option><option>B</option><option>C</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="question">
+        <p><strong>3. Emma</strong> likes doing experiments.</p>
+        <label>Club:
+          <select name="m3" class="inline-select">
+            <option value="">--</option><option>A</option><option>B</option><option>C</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="question">
+        <p><strong>4. David</strong> wants an activity on Friday.</p>
+        <label>Club:
+          <select name="m4" class="inline-select">
+            <option value="">--</option><option>A</option><option>B</option><option>C</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="question">
+        <p><strong>5. Lucy</strong> enjoys drawing and can go on Wednesday.</p>
+        <label>Club:
+          <select name="m5" class="inline-select">
+            <option value="">--</option><option>A</option><option>B</option><option>C</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section>
+      <h2>Part 3 · Use of English</h2>
+      <p class="small">Elige la opción correcta.</p>
+
+      <div class="question">
+        <p><strong>1.</strong> My sister ___ to school by bus every day.</p>
+        <select name="u1">
+          <option value="">--</option><option>A) go</option><option>B) goes</option><option>C) going</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <p><strong>2.</strong> There ___ some milk in the fridge.</p>
+        <select name="u2">
+          <option value="">--</option><option>A) is</option><option>B) are</option><option>C) be</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <p><strong>3.</strong> I ___ TV when you called.</p>
+        <select name="u3">
+          <option value="">--</option><option>A) watch</option><option>B) watched</option><option>C) was watching</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <p><strong>4.</strong> This is ___ book.</p>
+        <select name="u4">
+          <option value="">--</option><option>A) my</option><option>B) mine</option><option>C) me</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <p><strong>5.</strong> We have lived here ___ 2019.</p>
+        <select name="u5">
+          <option value="">--</option><option>A) for</option><option>B) since</option><option>C) from</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <p><strong>6.</strong> If it ___ tomorrow, we will stay at home.</p>
+        <select name="u6">
+          <option value="">--</option><option>A) rains</option><option>B) rained</option><option>C) raining</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <p><strong>7.</strong> She is ___ than her brother.</p>
+        <select name="u7">
+          <option value="">--</option><option>A) tall</option><option>B) taller</option><option>C) tallest</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <p><strong>8.</strong> I enjoy ___ music.</p>
+        <select name="u8">
+          <option value="">--</option><option>A) listen</option><option>B) listening</option><option>C) to listening</option>
+        </select>
+      </div>
+    </section>
+
+    <section>
+      <h2>Part 4 · Vocabulary</h2>
+      <p class="small">Elige la palabra correcta.</p>
+
+      <div class="question">
+        <p><strong>1.</strong> You use a ___ to write.</p>
+        <select name="v1">
+          <option value="">--</option><option>A) pen</option><option>B) cup</option><option>C) shoe</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <p><strong>2.</strong> We need to buy a ___ for the train.</p>
+        <select name="v2">
+          <option value="">--</option><option>A) ticket</option><option>B) map</option><option>C) key</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <p><strong>3.</strong> It's very cold. Put on your ___.</p>
+        <select name="v3">
+          <option value="">--</option><option>A) coat</option><option>B) sandals</option><option>C) shorts</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <p><strong>4.</strong> I have a headache. I need some ___.</p>
+        <select name="v4">
+          <option value="">--</option><option>A) medicine</option><option>B) bread</option><option>C) paper</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <p><strong>5.</strong> The opposite of “expensive” is ___.</p>
+        <select name="v5">
+          <option value="">--</option><option>A) cheap</option><option>B) rich</option><option>C) big</option>
+        </select>
+      </div>
+    </section>
+
+    <section>
+      <h2>Part 5 · Listening</h2>
+      <p class="small">Pulsa “Reproducir audio”, escucha y elige A, B o C. Puedes escucharlo dos veces.</p>
+      <button type="button" id="playAudio">▶ Reproducir audio</button>
+      <button type="button" id="stopAudio" class="secondary">■ Detener</button>
+
+      <div class="question">
+        <p><strong>1.</strong> Where is the school trip?</p>
+        <div class="options">
+          <label><input type="radio" name="l1" value="A"> A) To a museum.</label>
+          <label><input type="radio" name="l1" value="B"> B) To a park.</label>
+          <label><input type="radio" name="l1" value="C"> C) To a cinema.</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <p><strong>2.</strong> What time does the bus leave school?</p>
+        <div class="options">
+          <label><input type="radio" name="l2" value="A"> A) At 8:00.</label>
+          <label><input type="radio" name="l2" value="B"> B) At 8:30.</label>
+          <label><input type="radio" name="l2" value="C"> C) At 9:00.</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <p><strong>3.</strong> Why can't Lisa go in the morning?</p>
+        <div class="options">
+          <label><input type="radio" name="l3" value="A"> A) She has a dentist appointment.</label>
+          <label><input type="radio" name="l3" value="B"> B) She has homework.</label>
+          <label><input type="radio" name="l3" value="C"> C) She has a bus ticket.</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <p><strong>4.</strong> What time does the bus leave the museum?</p>
+        <div class="options">
+          <label><input type="radio" name="l4" value="A"> A) At 4:00.</label>
+          <label><input type="radio" name="l4" value="B"> B) At 5:00.</label>
+          <label><input type="radio" name="l4" value="C"> C) At 8:30.</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <p><strong>5.</strong> What will Lisa ask her teacher for?</p>
+        <div class="options">
+          <label><input type="radio" name="l5" value="A"> A) The homework.</label>
+          <label><input type="radio" name="l5" value="B"> B) A ticket.</label>
+          <label><input type="radio" name="l5" value="C"> C) A dentist appointment.</label>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Part 6 · Writing</h2>
+
+      <div class="question">
+        <h3>Task 1 – Email</h3>
+        <p>You are going to visit a new city next weekend. Write an email to a friend. Say where you are going, who you are going with, and ask your friend to come. Write <strong>35–50 words</strong>.</p>
+        <textarea name="writing1" placeholder="Write your email here..."></textarea>
+      </div>
+
+      <div class="question">
+        <h3>Task 2 – Short story</h3>
+        <p>Write a short story about a day when you found something unusual. Write <strong>35–50 words</strong>.</p>
+        <textarea name="writing2" placeholder="Write your story here..."></textarea>
+      </div>
+    </section>
+
+    <section>
+      <h2>Part 7 · Speaking</h2>
+      <p class="small">Escribe notas para responder oralmente.</p>
+      <div class="question">
+        <p><strong>1.</strong> What do you usually do at weekends?</p>
+        <textarea name="speaking1" placeholder="Notes..."></textarea>
+      </div>
+      <div class="question">
+        <p><strong>2.</strong> Describe your favourite place.</p>
+        <textarea name="speaking2" placeholder="Notes..."></textarea>
+      </div>
+    </section>
+
+    <div class="submit-area">
+      <button type="submit" id="submitBtn">Enviar examen</button>
+      <button type="button" id="downloadBtn" class="secondary" disabled>Descargar respuestas</button>
+      <p class="small">Este examen no incluye soluciones ni corrección automática.</p>
+      <div class="result" id="result" aria-live="polite"></div>
+    </div>
+  </form>
+</div>
+
+<script>
+  /* Temporizador */
+  let timeLeft = 60 * 60;
+  let timerInterval = null;
+  let submitted = false;
+  let lastData = null;
+
+  const timerEl = document.getElementById('timer');
+  const startTimerBtn = document.getElementById('startTimer');
+  const form = document.getElementById('examForm');
+  const resultEl = document.getElementById('result');
+  const downloadBtn = document.getElementById('downloadBtn');
+  const submitBtn = document.getElementById('submitBtn');
+
+  function formatTime(s) {
+    const m = Math.floor(s / 60).toString().padStart(2, '0');
+    const r = (s % 60).toString().padStart(2, '0');
+    return m + ':' + r;
+  }
+
+  function updateTimer() { timerEl.textContent = formatTime(timeLeft); }
+
+  startTimerBtn.addEventListener('click', function () {
+    if (timerInterval !== null) return;
+    startTimerBtn.disabled = true;
+    timerInterval = setInterval(function () {
+      if (timeLeft > 0) {
+        timeLeft--;
+        updateTimer();
+      } else {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        alert('Time is up. Please send your exam.');
+        if (!submitted) form.requestSubmit();
+      }
+    }, 1000);
+  });
+
+  /* Envío */
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (submitted) return;
+    submitted = true;
+
+    const answers = {};
+    new FormData(form).forEach(function (value, key) {
+      if (Object.prototype.hasOwnProperty.call(answers, key)) {
+        if (Array.isArray(answers[key])) answers[key].push(value);
+        else answers[key] = [answers[key], value];
+      } else {
+        answers[key] = value;
+      }
+    });
+
+    lastData = {
+      exam: 'English Level 2 – Cambridge Style',
+      submittedAt: new Date().toISOString(),
+      answers: answers
+    };
+
+    resultEl.textContent = 'Examen enviado. Respuestas registradas. No se muestran respuestas correctas.';
+    downloadBtn.disabled = false;
+
+    form.querySelectorAll('input, textarea, select').forEach(function (el) { el.disabled = true; });
+    submitBtn.disabled = true;
+
+    if (timerInterval !== null) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+    startTimerBtn.disabled = true;
+  });
+
+  downloadBtn.addEventListener('click', function () {
+    if (!lastData) return;
+    const blob = new Blob([JSON.stringify(lastData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'english-level-2-answers.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  /* Listening con voz del navegador */
+  const listeningText = "Hi Lisa, are you coming on the school trip to the museum on Friday? " +
+    "I'd love to, but I can't. I have a dentist appointment in the morning. " +
+    "That's a pity. The bus leaves school at half past eight. " +
+    "What time do you come back? " +
+    "We leave the museum at four and arrive at school at five. " +
+    "Maybe I can meet you at the museum after lunch? " +
+    "I'm sorry, but the bus leaves the museum at four. You could ask your teacher for the homework. " +
+    "Yes, I'll do that. Thanks.";
+
+  const playAudioBtn = document.getElementById('playAudio');
+  const stopAudioBtn = document.getElementById('stopAudio');
+
+  playAudioBtn.addEventListener('click', function () {
+    if (!('speechSynthesis' in window)) {
+      alert('Tu navegador no permite reproducir audio.');
+      return;
+    }
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(listeningText);
+    u.lang = 'en-GB';
+    u.rate = 0.9;
+    u.pitch = 1;
+    const voices = window.speechSynthesis.getVoices();
+    const en = voices.find(function (v) { return v.lang && v.lang.toLowerCase().indexOf('en') === 0; });
+    if (en) u.voice = en;
+    window.speechSynthesis.speak(u);
+  });
+
+  stopAudioBtn.addEventListener('click', function () {
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  });
+
+  updateTimer();
+</script>
+</body>
+</html>
